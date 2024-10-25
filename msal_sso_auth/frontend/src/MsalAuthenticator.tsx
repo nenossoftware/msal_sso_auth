@@ -55,6 +55,13 @@ class MsalAuthenticator extends StreamlitComponentBase<State> {
         let account = resp.account;
         Streamlit.setComponentValue({account: account});
       } else {
+        let currentAccounts = msalInstance.getAllAccounts();
+        if (currentAccounts.length > 0){
+          let account = currentAccounts[0];
+          Streamlit.setComponentValue({account: account});
+          return;
+        }
+
         msalInstance.ssoSilent({}).then(() => {
           const currentAccounts = msalInstance.getAllAccounts();
           let account = currentAccounts[0];
